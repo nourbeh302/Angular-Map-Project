@@ -1,4 +1,5 @@
 import { Component, AfterViewInit } from '@angular/core';
+import { Router } from '@angular/router';
 import * as L from 'leaflet';
 
 @Component({
@@ -19,7 +20,7 @@ export class MapComponent implements AfterViewInit {
 
   // http://api.positionstack.com/v1/forward?access_key=02c09469ce51f8291acd700af8cabecb&query=20 Awad Fahmy St., Cairo
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngAfterViewInit(): void { this.initMap(); }
 
@@ -64,7 +65,7 @@ export class MapComponent implements AfterViewInit {
     // Add each property long and lat to the map as markers
     this.properties.forEach(p =>
       L.marker(
-        [p.lat, p.long] as L.LatLngExpression, 
+        [p.lat, p.long] as L.LatLngExpression,
         { icon: markerIcon }
       ).addTo(this.map)
     )
@@ -75,26 +76,14 @@ export class MapComponent implements AfterViewInit {
 
     // Do something when I click on the default marker
     myHomeMarker.addEventListener("click", () => {
-      var newLatLng = [29.8747, 31.3345]
-      this.map.setView(newLatLng, ZOOM)
+      // var newLatLng = [29.8747, 31.3345]
+      // this.map.setView(newLatLng, ZOOM)
+      this.router.navigate(["/property", 3])
     })
 
     // Add tiles to the map
     tiles.addTo(this.map);
-
-    //this.getLatLng("4 Minya, El-Bostan, Heliopolis, Cairo")
-
   }
-
-  // 4 Minya, El-Bostan, Heliopolis, Cairo
-  /*getLatLng(query: String): void {
-    fetch(`http://api.positionstack.com/v1/forward?access_key=${this.API_KEY}&query=${query}`)
-      .then(res => res.json())
-      .then(data =>
-        // L.map("map").setView([data['data'][0]['latitude'], data['data'][0]['longitude']] as L.LatLngExpression))
-    console.log([data['data'][0]['latitude'], data['data'][0]['longitude']] as L.LatLngExpression))
-  }
-  */
 }
 
 
